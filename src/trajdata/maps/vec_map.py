@@ -60,8 +60,14 @@ class VectorMap:
         self.env_name, self.map_name = self.map_id.split(":")
 
         self.lanes: Optional[List[RoadLane]] = None
+        self.ped_crosswalks: Optional[List[PedCrosswalk]] = None
+        self.ped_walkways: Optional[List[PedWalkway]] = None
         if MapElementType.ROAD_LANE in self.elements:
             self.lanes = list(self.elements[MapElementType.ROAD_LANE].values())
+        if MapElementType.PED_CROSSWALK in self.elements:
+            self.ped_crosswalks = list(self.elements[MapElementType.PED_CROSSWALK].values())
+        if MapElementType.PED_WALKWAY in self.elements:
+            self.ped_walkways = list(self.elements[MapElementType.PED_WALKWAY].values())
 
     def add_map_element(self, map_elem: MapElement) -> None:
         self.elements[map_elem.elem_type][map_elem.id] = map_elem

@@ -716,7 +716,6 @@ class UnifiedDataset(Dataset):
             ):
                 if len(index_elems) > 0:
                     data_index.append((str(orig_path), index_elems_len, index_elems))
-
         return data_index
 
     @staticmethod
@@ -752,8 +751,10 @@ class UnifiedDataset(Dataset):
             ):
                 # Ignore this datum if no agent in the scene satisfies our time requirements.
                 continue
-
+            # if len(index_elems) > 0:
+            #     breakpoint()
             index_elems.append(ts)
+            
 
         return (
             (scene if ret_scene_info else None),
