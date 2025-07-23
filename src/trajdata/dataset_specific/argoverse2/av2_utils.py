@@ -58,16 +58,17 @@ OBJECT_TYPE_DATA: Dict[str, Tuple[AgentType, float, float, float]] = {
 
 @dataclasses.dataclass
 class Av2ScenarioIds:
-    train: list[str]
+    # train: list[str]
     val: list[str]
-    test: list[str]
+    # test: list[str]
 
     @staticmethod
     def create(dataset_path: Path) -> "Av2ScenarioIds":
-        train = os.listdir(dataset_path / "train")
-        val = os.listdir(dataset_path / "val")
-        test = os.listdir(dataset_path / "test")
-        return Av2ScenarioIds(train=train, val=val, test=test)
+        # train = os.listdir(dataset_path / "train" /"raw")
+        val = os.listdir(dataset_path / "val"/"raw")
+        # test = os.listdir(dataset_path / "test")
+        # return Av2ScenarioIds(train=train, val=val, test=test)
+        return Av2ScenarioIds(val=val)
 
     @property
     def scene_split_map(self) -> Dict[str, T_Split]:
@@ -115,7 +116,7 @@ class Av2Object:
         split, scenario_id = _unpack_av2_scenario_name(scenario_name)
         del scenario_name
 
-        scenario_dir = self.dataset_path / split / scenario_id
+        scenario_dir = self.dataset_path / split / 'raw'/ scenario_id
         if not scenario_dir.exists():
             raise FileNotFoundError(f"Scenario path {scenario_dir} not found")
         return scenario_dir, scenario_id
@@ -123,13 +124,13 @@ class Av2Object:
     def load_scenario(self, scenario_name: str) -> ArgoverseScenario:
         scenario_dir, scenario_id = self._parse_scenario_name(scenario_name)
         return load_argoverse_scenario_parquet(
-            scenario_dir / _scenario_df_filename(scenario_id)
+            scenario_dir /  _scenario_df_filename(scenario_id)
         )
 
     def load_map(self, scenario_name: str) -> ArgoverseStaticMap:
         scenario_dir, scenario_id = self._parse_scenario_name(scenario_name)
         return ArgoverseStaticMap.from_json(
-            scenario_dir / _scenario_map_filename(scenario_id)
+            scenario_dir /  _scenario_map_filename(scenario_id)
         )
 
 
